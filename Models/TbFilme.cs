@@ -8,6 +8,12 @@ namespace apifilmes.Models
     [Table("tb_filme")]
     public partial class TbFilme
     {
+        public TbFilme()
+        {
+            TbDiretor = new HashSet<TbDiretor>();
+            TbFilmeAtor = new HashSet<TbFilmeAtor>();
+        }
+
         [Key]
         [Column("id_filme", TypeName = "int(11)")]
         public int IdFilme { get; set; }
@@ -18,12 +24,17 @@ namespace apifilmes.Models
         [Column("ds_genero", TypeName = "varchar(100)")]
         public string DsGenero { get; set; }
         [Column("nr_duracao", TypeName = "int(11)")]
-        public int NrDuracao { get; set; }
+        public int? NrDuracao { get; set; }
         [Column("vl_avaliacao", TypeName = "decimal(15,2)")]
-        public decimal VlAvaliacao { get; set; }
+        public decimal? VlAvaliacao { get; set; }
         [Column("bt_disponivel")]
         public bool BtDisponivel { get; set; }
         [Column("dt_lancamento", TypeName = "datetime")]
         public DateTime DtLancamento { get; set; }
+
+        [InverseProperty("IdFilmeNavigation")]
+        public virtual ICollection<TbDiretor> TbDiretor { get; set; }
+        [InverseProperty("IdFilmeNavigation")]
+        public virtual ICollection<TbFilmeAtor> TbFilmeAtor { get; set; }
     }
 }
