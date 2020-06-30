@@ -9,61 +9,46 @@ namespace apifilmes.Controllers
 {
      [ApiController]
     [Route("[controller]")]
+   
      public class filmecontroller:ControllerBase
     {
-              [HttpPost]
-              public Models.TbFilme inserir (Models.TbFilme filme)
-              {
-                  Models.apidbContext db=new Models.apidbContext();
-                  db.Add(filme);
-                  db.SaveChanges();
-                  return filme;
-              }
-              [HttpGet]
-              public List<Models.TbFilme> listar()
-              {
-                  Models.apidbContext db=new Models.apidbContext();
-                  List<Models.TbFilme> filmes=db.TbFilme.ToList();
-                  return filmes;
-              }
-              [HttpPut("{id}")]
-              public Models.TbFilme alterar (int id,Models.TbFilme filme)
-              {
-                  Models.apidbContext context=new Models.apidbContext();
-                  Models.TbFilme agora=context.TbFilme.First(x=>x.IdFilme ==id);
-                  agora.NmFilme=filme.NmFilme;
-                  agora.DsGenero=filme.DsGenero;
-                  agora.VlAvaliacao=filme.VlAvaliacao;
-                  agora.BtDisponivel=filme.BtDisponivel;
-                  agora.NrDuracao=filme.NrDuracao;
-                  agora.DtLancamento=filme.DtLancamento;
-                  context.SaveChanges();
-                  return agora;
-              }
-              
-              public Models.TbFilme consultarid(int id)
-               {
-                   Models.apidbContext ctx=new Models.apidbContext();
-                   Models.TbFilme filme=ctx.TbFilme.FirstOrDefault(x=>x.IdFilme==id);
-                   return filme;
-               }
-                [HttpGet("filtrar")]
-               public List<Models.TbFilme> filtrar (string nome,string genero)
-               {
-                     Models.apidbContext ctx=new Models.apidbContext();
-                     List<Models.TbFilme> filmes=ctx.TbFilme.Where(x=>x.NmFilme.Contains(nome)&&x.DsGenero==genero)
-                                                            .ToList();
-                return filmes;
-               }
-               [HttpDelete("{id}")]
-               public Models.TbFilme deletar(int id)
-               {
-                   Models.apidbContext ctx=new Models.apidbContext();
-                   Models.TbFilme atual=ctx.TbFilme.FirstOrDefault(x=>x.IdFilme==id);
-                   ctx.TbFilme.Remove(atual);
-                   ctx.SaveChanges();
-                   return atual;
-               }
+         [HttpPost]
+         public ActionResult<Models.Response.filmeresponse> inserir(Models.Request.filmerequest req)
+         {
+             try
+             {
+             utils.filmeconversor conversor=new utils.filmeconversor();
+             Models.TbFilme filme=conversor.paramodelotabela(req);
+             Bussines.filmebussines Bussines=new Bussines.filmebussines();
+             filme=Bussines.inserir(filme);
+             Models.Response.filmeresponse resp=conversor.paramodeloresponse(filme);
+             return resp;
+             }
+             catch (System.Exception ex)
+             {
+                return BadRequest(new Models.Response.erroresponse(400,ex.Message)); 
+                
+             }
+           
+         }
+         [HttpGet]
+         public ActionResult<List<Models.Response.filmeresponse>> consultar()
+         {
+            try
+            {
+                utils.filmeconversor conversor=new utils.filmeconversor();
+             List<Models.TbFilme> filme=new List<Models.TbFilme>();
+             Database.filmedatabase database=new Database.filmedatabase();
+             filme=database.inserir2(filme);
+             List<Models.Response.filmeresponse> resp=filme.Select(x=>conversor.paramodeloresponse(x)).ToList();
+             
+             return resp;
+            }
+            catch
+            {
+                return new List<Models.Response.filmeresponse>();
+            } 
+         }
 
                
 
