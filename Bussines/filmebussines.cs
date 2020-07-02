@@ -23,5 +23,25 @@ namespace apifilmes.Bussines
                
                return r;
         }
+        public Models.TbFilme inserir3(Models.TbFilme filme)
+        {
+            if(filme.NrDuracao<1)
+              throw new ArgumentException("Duração invalida");
+              
+              return filme;
+
+        }
+       public List<Models.TbFilme> inserir4(List<Models.TbFilme> filme)
+       {
+
+           if(filme.Count==0)
+           {
+               throw new ArgumentException(null);
+
+
+               
+           }
+           return filme;
+       }
     }
 }

@@ -12,6 +12,61 @@ namespace apifilmes.Controllers
    
      public class filmecontroller:ControllerBase
     {
+         [HttpGet]
+         public ActionResult<List<Models.Response.filmeresponse>> consultarporparametro(string nome,string genero)
+         {
+             try{         
+             utils.filmeconversor conversor=new utils.filmeconversor();
+            Database.filmedatabase database=new Database.filmedatabase();
+            List<Models.TbFilme> filme=new List<Models.TbFilme>();
+            filme= database.filtrar(nome,genero);
+            List<Models.Response.filmeresponse> result=filme.Select(x=>conversor.paramodeloresponse(x)).ToList();
+            return result;
+            }
+            catch(System.Exception ex){
+            return new NotFoundObjectResult(new List<Models.Response.filmeresponse>());
+            }
+         }
+         [HttpDelete("{id}")]
+         public ActionResult<Models.TbFilme> deletar(int id)
+         {
+             try{
+             Database.filmedatabase database=new Database.filmedatabase();
+             Models.TbFilme filme=new Models.TbFilme();
+             database.deletar(id);
+             return Ok(null);
+             }
+                catch(System.Exception ex)
+             {
+                 
+                 return new NotFoundObjectResult(null);
+             }
+ 
+
+         }
+         //[HttpGet("{id}")]
+         public ActionResult<Models.Response.filmeresponse> consultarporid(int id)
+         {
+             try
+             {
+             utils.filmeconversor conversor=new utils.filmeconversor();
+             Database.filmedatabase database=new Database.filmedatabase();
+             Models.TbFilme filme=new Models.TbFilme();
+             filme=database.inserir4(id);
+             Models.Response.filmeresponse result=conversor.paramodeloresponse(filme);
+             return result;
+
+             }
+             catch(System.Exception ex)
+             {
+                 
+                 return new NotFoundObjectResult(null);
+             }
+ 
+            
+          
+
+         }
          [HttpPost]
          public ActionResult<Models.Response.filmeresponse> inserir(Models.Request.filmerequest req)
          {
@@ -31,7 +86,7 @@ namespace apifilmes.Controllers
              }
            
          }
-         [HttpGet]
+         //[HttpGet]
          public ActionResult<List<Models.Response.filmeresponse>> consultar()
          {
             try
@@ -48,6 +103,26 @@ namespace apifilmes.Controllers
             {
                 return new List<Models.Response.filmeresponse>();
             } 
+         }
+         [HttpPut("{id}")]
+         public ActionResult<dynamic> alterar(int id,Models.Request.filmerequest modelo)
+         {
+                try
+                {
+                utils.filmeconversor conversor=new utils.filmeconversor();
+                Models.TbFilme filme=new Models.TbFilme();
+                Database.filmedatabase database=new Database.filmedatabase();
+                Models.TbFilme tabela=conversor.paramodelotabela(modelo);
+                filme=database.inserir3(id,tabela);
+                return null;
+                }
+                catch (System.Exception ex)
+                {
+                    return BadRequest(new Models.Response.erroresponse(400,ex.Message));
+                    
+                }
+
+
          }
 
                
