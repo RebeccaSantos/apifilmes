@@ -23,7 +23,7 @@ namespace apifilmes.Controllers
             List<Models.Response.filmeresponse> result=filme.Select(x=>conversor.paramodeloresponse(x)).ToList();
             return result;
             }
-            catch(System.Exception ex){
+            catch{
             return new NotFoundObjectResult(new List<Models.Response.filmeresponse>());
             }
          }
@@ -36,7 +36,7 @@ namespace apifilmes.Controllers
              database.deletar(id);
              return Ok(null);
              }
-                catch(System.Exception ex)
+                catch
              {
                  
                  return new NotFoundObjectResult(null);
@@ -57,7 +57,7 @@ namespace apifilmes.Controllers
              return result;
 
              }
-             catch(System.Exception ex)
+             catch
              {
                  
                  return new NotFoundObjectResult(null);
