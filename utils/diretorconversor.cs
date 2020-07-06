@@ -2,7 +2,7 @@ namespace apifilmes.utils
 {
     public class diretorconversor
     {
-        public Models.TbDiretor paramodelotabela(Models.Request.diretorrequest req)
+        public Models.TbDiretor ParamodeloTabela(Models.Request.diretorrequest req)
         {
             Models.TbDiretor diretor=new Models.TbDiretor();
 
@@ -13,7 +13,7 @@ namespace apifilmes.utils
             return diretor;
 
         }
-        public Models.Response.diretorresponse paramodeloresponse(Models.TbDiretor tabela)
+        public Models.Response.diretorresponse ParamodeloResponse(Models.TbDiretor tabela)
         {
             Models.Response.diretorresponse resp=new Models.Response.diretorresponse();
             resp.Id=tabela.IdDiretor;
