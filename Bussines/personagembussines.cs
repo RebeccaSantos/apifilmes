@@ -16,6 +16,21 @@ namespace apifilmes.Bussines
 
                 return personagem;
         }
+        public Models.Request.personagemrequest ValidarAlteracao(Models.Request.personagemrequest req)
+        {
+                    if(req.Personagem=="")
+                            throw new ArgumentException("Personagem obrigatorio");
+
+                    
+                    if(req.Filme==0)
+                        throw new ArgumentException("O id deve ser maior que 0");
+
+                    if(req.ator==0)
+                        throw new ArgumentException("O id deve ser maior que 0");
+
+                        return req;
+
+        }
         
     }
 }
